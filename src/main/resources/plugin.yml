@@ -13,6 +13,7 @@ commands:
   commandblocker:
     description: Main command for CommandBlocker plugin
     usage: /<command> <add|remove|list|reload|help>
+    permission: commandblocker.command
     aliases:
       - cb
 
