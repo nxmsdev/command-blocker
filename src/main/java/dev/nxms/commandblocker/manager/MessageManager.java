@@ -1,7 +1,6 @@
 package dev.nxms.commandblocker.manager;
 
 import dev.nxms.commandblocker.CommandBlocker;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,32 +16,63 @@ import java.util.regex.Pattern;
 public class MessageManager {
 
     private final CommandBlocker plugin;
+
     private FileConfiguration messagesConfig;
     private String prefix;
 
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([A-Fa-f0-9]{6})");
-    private static final LegacyComponentSerializer LEGACY_SERIALIZER = LegacyComponentSerializer.legacyAmpersand();
 
     public MessageManager(CommandBlocker plugin) {
         this.plugin = plugin;
-        reload();
+        loadMessages();
+    }
+
+    /**
+     * Loads messages from the language file.
+     * If language files are missing, it creates them from plugin resources.
+     */
+    public void loadMessages() {
+        // Ensure plugin folder exists
+        if (!plugin.getDataFolder().exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            plugin.getDataFolder().mkdirs();
+        }
+
+        // Ensure default message files exist
+        File plFile = new File(plugin.getDataFolder(), "messages_pl.yml");
+        if (!plFile.exists()) {
+            plugin.getLogger().warning("Couldn't find messages_pl.yml file! Creating new messages file.");
+            plugin.saveResource("messages_pl.yml", false);
+        }
+
+        File enFile = new File(plugin.getDataFolder(), "messages_en.yml");
+        if (!enFile.exists()) {
+            plugin.getLogger().warning("Couldn't find messages_en.yml file! Creating new messages file.");
+            plugin.saveResource("messages_en.yml", false);
+        }
+
+        String language = plugin.getConfig().getString("language", "en").toLowerCase();
+        String fileName = "messages_" + language + ".yml";
+
+        File messagesFile = new File(plugin.getDataFolder(), fileName);
+
+        // Fallback if selected language file doesn't exist
+        if (!messagesFile.exists()) {
+            plugin.getLogger().warning("Messages file " + fileName + " not found! Using messages_en.yml.");
+            messagesFile = enFile;
+        }
+
+        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
+        prefix = colorize(messagesConfig.getString("prefix", "&8[&cCommandBlocker&8] &7"));
+
+        plugin.getLogger().info("Messages file has been loaded (" + messagesFile.getName() + ").");
     }
 
     /**
      * Reloads messages from the language file.
      */
     public void reload() {
-        String language = plugin.getConfig().getString("language", "en");
-        File messagesFile = new File(plugin.getDataFolder(), "messages_" + language + ".yml");
-
-        if (!messagesFile.exists()) {
-            plugin.getLogger().warning("Language file messages_" + language + ".yml not found! Using messages_en.yml!");
-            messagesFile = new File(plugin.getDataFolder(), "messages_en.yml");
-        }
-
-        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
-        prefix = colorize(messagesConfig.getString("prefix", "&8[&cCommandBlocker&8] &7"));
-
+        loadMessages();
         plugin.getLogger().info("Messages has been reloaded.");
     }
 
@@ -103,7 +133,7 @@ public class MessageManager {
             return "";
         }
 
-        // Convert hex colors (&#RRGGBB) to Bukkit format
+        // Convert hex colors (&#RRGGBB) to Bukkit format (§x§R§R§G§G§B§B)
         Matcher matcher = HEX_PATTERN.matcher(text);
         StringBuffer buffer = new StringBuffer();
         while (matcher.find()) {

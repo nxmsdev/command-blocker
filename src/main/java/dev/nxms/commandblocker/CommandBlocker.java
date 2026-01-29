@@ -33,8 +33,6 @@ public class CommandBlocker extends JavaPlugin {
         instance = this;
 
         saveDefaultConfig();
-        saveResource("messages_en.yml", false);
-        saveResource("messages_pl.yml", false);
 
         loadCachedSettings();
 
