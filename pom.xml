@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dev.nxms</groupId>
-    <artifactId>CommandBlock</artifactId>
-    <version>1.0.0</version>
+    <artifactId>CommandBlocker</artifactId>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
-    <name>CommandBlock</name>
+    <name>CommandBlocker</name>
 
     <properties>
         <java.version>21</java.version>

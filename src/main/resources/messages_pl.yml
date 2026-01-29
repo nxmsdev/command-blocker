@@ -1,6 +1,6 @@
-# CommandBlock - Messages (Polish)
+# CommandBlocker - Messages (Polish)
 
-prefix: "&#ff6b6b&lCommand&#feca57Block &8» &7"
+prefix: "&#ff6b6b&lCommand&#feca57Blocker &8» &7"
 
 no-permission: "&cNie masz uprawnień do użycia tej komendy!"
 unknown-subcommand: "&cNieznana podkomenda. Użyj &e/commandblock help &caby uzyskać pomoc."

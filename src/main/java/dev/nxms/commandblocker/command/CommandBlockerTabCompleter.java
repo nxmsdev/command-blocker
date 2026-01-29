@@ -1,7 +1,7 @@
-package dev.nxms.commandblock.command;
+package dev.nxms.commandblocker.command;
 
-import dev.nxms.commandblock.CommandBlock;
-import dev.nxms.commandblock.manager.BlockedCommandManager;
+import dev.nxms.commandblocker.CommandBlocker;
+import dev.nxms.commandblocker.manager.BlockedCommandManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
  * Tab completer for /commandblock command.
  * Hides subcommands from users without proper permissions.
  */
-public class CommandBlockTabCompleter implements TabCompleter {
+public class CommandBlockerTabCompleter implements TabCompleter {
 
-    private final CommandBlock plugin;
+    private final CommandBlocker plugin;
     private final BlockedCommandManager blockedManager;
 
-    public CommandBlockTabCompleter(CommandBlock plugin) {
+    public CommandBlockerTabCompleter(CommandBlocker plugin) {
         this.plugin = plugin;
         this.blockedManager = plugin.getBlockedCommandManager();
     }
@@ -43,12 +43,12 @@ public class CommandBlockTabCompleter implements TabCompleter {
         if (args.length == 2) {
             String subcommand = args[0].toLowerCase();
 
-            if (subcommand.equals("add") && hasPermission(sender, "commandblock.add")) {
+            if (subcommand.equals("add") && hasPermission(sender, "commandblocker.add")) {
                 // Show only commands that are NOT blocked
                 return filterStartsWith(getUnblockedCommands(), args[1]);
             }
 
-            if (subcommand.equals("remove") && hasPermission(sender, "commandblock.remove")) {
+            if (subcommand.equals("remove") && hasPermission(sender, "commandblocker.remove")) {
                 // Show only commands that ARE blocked
                 return filterStartsWith(getBlockedCommands(), args[1]);
             }
@@ -63,16 +63,16 @@ public class CommandBlockTabCompleter implements TabCompleter {
     private List<String> getAvailableSubcommands(CommandSender sender) {
         List<String> subcommands = new ArrayList<>();
 
-        if (hasPermission(sender, "commandblock.add")) {
+        if (hasPermission(sender, "commandblocker.add")) {
             subcommands.add("add");
         }
-        if (hasPermission(sender, "commandblock.remove")) {
+        if (hasPermission(sender, "commandblocker.remove")) {
             subcommands.add("remove");
         }
-        if (hasPermission(sender, "commandblock.list")) {
+        if (hasPermission(sender, "commandblocker.list")) {
             subcommands.add("list");
         }
-        if (hasPermission(sender, "commandblock.reload")) {
+        if (hasPermission(sender, "commandblocker.reload")) {
             subcommands.add("reload");
         }
         subcommands.add("help");
@@ -125,10 +125,10 @@ public class CommandBlockTabCompleter implements TabCompleter {
     }
 
     private boolean hasBasePermission(CommandSender sender) {
-        return sender.hasPermission("commandblock.command") || sender.hasPermission("commandblock.admin");
+        return sender.hasPermission("commandblocker.command") || sender.hasPermission("commandblocker.admin");
     }
 
     private boolean hasPermission(CommandSender sender, String permission) {
-        return sender.hasPermission(permission) || sender.hasPermission("commandblock.admin");
+        return sender.hasPermission(permission) || sender.hasPermission("commandblocker.admin");
     }
 }

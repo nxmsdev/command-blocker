@@ -1,6 +1,6 @@
-package dev.nxms.commandblock.manager;
+package dev.nxms.commandblocker.manager;
 
-import dev.nxms.commandblock.CommandBlock;
+import dev.nxms.commandblocker.CommandBlocker;
 
 import java.util.HashSet;
 import java.util.List;
@@ -12,10 +12,10 @@ import java.util.Set;
  */
 public class BlockedCommandManager {
 
-    private final CommandBlock plugin;
+    private final CommandBlocker plugin;
     private final Set<String> blockedCommands;
 
-    public BlockedCommandManager(CommandBlock plugin) {
+    public BlockedCommandManager(CommandBlocker plugin) {
         this.plugin = plugin;
         this.blockedCommands = new HashSet<>();
         reload();

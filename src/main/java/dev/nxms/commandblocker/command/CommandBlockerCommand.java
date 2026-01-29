@@ -1,8 +1,8 @@
-package dev.nxms.commandblock.command;
+package dev.nxms.commandblocker.command;
 
-import dev.nxms.commandblock.CommandBlock;
-import dev.nxms.commandblock.manager.BlockedCommandManager;
-import dev.nxms.commandblock.manager.MessageManager;
+import dev.nxms.commandblocker.CommandBlocker;
+import dev.nxms.commandblocker.manager.BlockedCommandManager;
+import dev.nxms.commandblocker.manager.MessageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,13 +12,13 @@ import org.jetbrains.annotations.NotNull;
  * Main command executor for /commandblock.
  * Handles all subcommands: add, remove, list, reload, help.
  */
-public class CommandBlockCommand implements CommandExecutor {
+public class CommandBlockerCommand implements CommandExecutor {
 
-    private final CommandBlock plugin;
+    private final CommandBlocker plugin;
     private final MessageManager messages;
     private final BlockedCommandManager blockedManager;
 
-    public CommandBlockCommand(CommandBlock plugin) {
+    public CommandBlockerCommand(CommandBlocker plugin) {
         this.plugin = plugin;
         this.messages = plugin.getMessageManager();
         this.blockedManager = plugin.getBlockedCommandManager();
@@ -54,7 +54,7 @@ public class CommandBlockCommand implements CommandExecutor {
      * Handles the add subcommand.
      */
     private void handleAdd(CommandSender sender, String[] args) {
-        if (!hasPermission(sender, "commandblock.add")) {
+        if (!hasPermission(sender, "commandblocker.add")) {
             messages.send(sender, "no-permission");
             return;
         }
@@ -76,7 +76,7 @@ public class CommandBlockCommand implements CommandExecutor {
      * Handles the remove subcommand.
      */
     private void handleRemove(CommandSender sender, String[] args) {
-        if (!hasPermission(sender, "commandblock.remove")) {
+        if (!hasPermission(sender, "commandblocker.remove")) {
             messages.send(sender, "no-permission");
             return;
         }
@@ -98,7 +98,7 @@ public class CommandBlockCommand implements CommandExecutor {
      * Handles the list subcommand.
      */
     private void handleList(CommandSender sender) {
-        if (!hasPermission(sender, "commandblock.list")) {
+        if (!hasPermission(sender, "commandblocker.list")) {
             messages.send(sender, "no-permission");
             return;
         }
@@ -118,7 +118,7 @@ public class CommandBlockCommand implements CommandExecutor {
      * Handles the reload subcommand.
      */
     private void handleReload(CommandSender sender) {
-        if (!hasPermission(sender, "commandblock.reload")) {
+        if (!hasPermission(sender, "commandblocker.reload")) {
             messages.send(sender, "no-permission");
             return;
         }
@@ -133,16 +133,16 @@ public class CommandBlockCommand implements CommandExecutor {
     private void handleHelp(CommandSender sender) {
         messages.sendRaw(sender, "help.header");
 
-        if (hasPermission(sender, "commandblock.add")) {
+        if (hasPermission(sender, "commandblocker.add")) {
             messages.sendRaw(sender, "help.add");
         }
-        if (hasPermission(sender, "commandblock.remove")) {
+        if (hasPermission(sender, "commandblocker.remove")) {
             messages.sendRaw(sender, "help.remove");
         }
-        if (hasPermission(sender, "commandblock.list")) {
+        if (hasPermission(sender, "commandblocker.list")) {
             messages.sendRaw(sender, "help.list");
         }
-        if (hasPermission(sender, "commandblock.reload")) {
+        if (hasPermission(sender, "commandblocker.reload")) {
             messages.sendRaw(sender, "help.reload");
         }
         messages.sendRaw(sender, "help.help");
@@ -152,13 +152,13 @@ public class CommandBlockCommand implements CommandExecutor {
      * Checks if sender has base permission to use the command.
      */
     private boolean hasBasePermission(CommandSender sender) {
-        return sender.hasPermission("commandblock.command") || sender.hasPermission("commandblock.admin");
+        return sender.hasPermission("commandblocker.command") || sender.hasPermission("commandblocker.admin");
     }
 
     /**
      * Checks if sender has specific permission or admin permission.
      */
     private boolean hasPermission(CommandSender sender, String permission) {
-        return sender.hasPermission(permission) || sender.hasPermission("commandblock.admin");
+        return sender.hasPermission(permission) || sender.hasPermission("commandblocker.admin");
     }
 }

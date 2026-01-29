@@ -1,8 +1,6 @@
-package dev.nxms.commandblock.manager;
+package dev.nxms.commandblocker.manager;
 
-import dev.nxms.commandblock.CommandBlock;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import dev.nxms.commandblocker.CommandBlocker;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -18,14 +16,14 @@ import java.util.regex.Pattern;
  */
 public class MessageManager {
 
-    private final CommandBlock plugin;
+    private final CommandBlocker plugin;
     private FileConfiguration messagesConfig;
     private String prefix;
 
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([A-Fa-f0-9]{6})");
     private static final LegacyComponentSerializer LEGACY_SERIALIZER = LegacyComponentSerializer.legacyAmpersand();
 
-    public MessageManager(CommandBlock plugin) {
+    public MessageManager(CommandBlocker plugin) {
         this.plugin = plugin;
         reload();
     }
@@ -43,7 +41,7 @@ public class MessageManager {
         }
 
         messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
-        prefix = colorize(messagesConfig.getString("prefix", "&8[&cCommandBlock&8] &7"));
+        prefix = colorize(messagesConfig.getString("prefix", "&8[&cCommandBlocker&8] &7"));
 
         plugin.getLogger().info("Messages has been reloaded.");
     }

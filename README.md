@@ -1,4 +1,4 @@
-# CommandBlock
+# CommandBlocker
 
 A lightweight PaperMC plugin for blocking commands on Minecraft 1.21.1 servers.
 
@@ -13,19 +13,19 @@ A lightweight PaperMC plugin for blocking commands on Minecraft 1.21.1 servers.
 
 ## Permissions
 
-| Permission | Description |
-|:-----------|:------------|
-| commandblock.command | Access to /commandblock and /cb commands |
-| commandblock.add | Access to /commandblock add command |
-| commandblock.remove | Access to /commandblock remove command |
-| commandblock.list | Access to /commandblock list command |
-| commandblock.reload | Access to /commandblock reload command |
-| commandblock.bypass | Bypass blocked commands restriction |
-| commandblock.admin | Grants access to all CommandBlock commands and bypass |
+| Permission             | Description |
+|:-----------------------|:------------|
+| commandblocker.command | Access to /commandblock and /cb commands |
+| commandblocker.add     | Access to /commandblock add command |
+| commandblocker.remove  | Access to /commandblock remove command |
+| commandblocker.list    | Access to /commandblock list command |
+| commandblocker.reload  | Access to /commandblock reload command |
+| commandblocker.bypass  | Bypass blocked commands restriction |
+| commandblocker.admin   | Grants access to all CommandBlock commands and bypass |
 
 ## Commands
 
-Main commands: `/commandblock` or `/cb`
+Main commands: `/commandblocker` or `/cb`
 
 | Command | Description |
 |:--------|:------------|
@@ -45,7 +45,7 @@ Main commands: `/commandblock` or `/cb`
     # List of blocked commands
     # Format: plugin:command (e.g., minecraft:msg, essentials:home)
     blocked-commands:
-      - "minecraft:me"
+      - "plguin:command"
 
 ### Language Selection
 

@@ -1,6 +1,6 @@
-name: CommandBlock
+name: CommandBlocker
 version: ${project.version}
-main: dev.nxms.commandblock.CommandBlock
+main: dev.nxms.commandblocker.CommandBlocker
 api-version: "1.21"
 author: nxmsdev
 website: https://www.nxms.dev
@@ -8,37 +8,37 @@ description: A plugin for blocking commands
 
 commands:
   commandblock:
-    description: Main command for CommandBlock plugin
+    description: Main command for CommandBlocker plugin
     usage: /<command> <add|remove|list|reload|help>
     aliases:
       - cb
 
 permissions:
   commandblock.command:
-    description: Access to /commandblock command
+    description: Access to /commandblocker command
     default: op
   commandblock.admin:
     description: Full access to all CommandBlock commands
     default: op
     children:
-      commandblock.command: true
-      commandblock.add: true
-      commandblock.remove: true
-      commandblock.list: true
-      commandblock.reload: true
-      commandblock.bypass: true
-  commandblock.add:
-    description: Access to /commandblock add
+      commandblocker.command: true
+      commandblocker.add: true
+      commandblocker.remove: true
+      commandblocker.list: true
+      commandblocker.reload: true
+      commandblocker.bypass: true
+  commandblocker.add:
+    description: Access to /commandblocker add
     default: op
-  commandblock.remove:
-    description: Access to /commandblock remove
+  commandblocker.remove:
+    description: Access to /commandblocker remove
     default: op
-  commandblock.list:
-    description: Access to /commandblock list
+  commandblocker.list:
+    description: Access to /commandblocker list
     default: op
-  commandblock.reload:
-    description: Access to /commandblock reload
+  commandblocker.reload:
+    description: Access to /commandblocker reload
     default: op
-  commandblock.bypass:
+  commandblocker.bypass:
     description: Bypass blocked commands
     default: op

@@ -1,8 +1,8 @@
-package dev.nxms.commandblock.listener;
+package dev.nxms.commandblocker.listener;
 
-import dev.nxms.commandblock.CommandBlock;
-import dev.nxms.commandblock.manager.BlockedCommandManager;
-import dev.nxms.commandblock.manager.MessageManager;
+import dev.nxms.commandblocker.CommandBlocker;
+import dev.nxms.commandblocker.manager.BlockedCommandManager;
+import dev.nxms.commandblocker.manager.MessageManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,7 +22,7 @@ public class CommandListener implements Listener {
     private final BlockedCommandManager blockedManager;
     private final MessageManager messages;
 
-    public CommandListener(CommandBlock plugin) {
+    public CommandListener(CommandBlocker plugin) {
         this.blockedManager = plugin.getBlockedCommandManager();
         this.messages = plugin.getMessageManager();
     }
@@ -76,6 +76,6 @@ public class CommandListener implements Listener {
      * Checks if player can bypass command blocking.
      */
     private boolean canBypass(Player player) {
-        return player.hasPermission("commandblock.bypass");
+        return player.hasPermission("commandblocker.bypass");
     }
 }

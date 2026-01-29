@@ -1,21 +1,21 @@
-package dev.nxms.commandblock;
+package dev.nxms.commandblocker;
 
-import dev.nxms.commandblock.command.CommandBlockCommand;
-import dev.nxms.commandblock.command.CommandBlockTabCompleter;
-import dev.nxms.commandblock.listener.CommandListener;
-import dev.nxms.commandblock.manager.BlockedCommandManager;
-import dev.nxms.commandblock.manager.MessageManager;
+import dev.nxms.commandblocker.command.CommandBlockerCommand;
+import dev.nxms.commandblocker.command.CommandBlockerTabCompleter;
+import dev.nxms.commandblocker.listener.CommandListener;
+import dev.nxms.commandblocker.manager.BlockedCommandManager;
+import dev.nxms.commandblocker.manager.MessageManager;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * Main plugin class for CommandBlock.
+ * Main plugin class for CommandBlocker.
  * Handles initialization and management of all plugin components.
  */
-public class CommandBlock extends JavaPlugin {
+public class CommandBlocker extends JavaPlugin {
 
-    private static CommandBlock instance;
+    private static CommandBlocker instance;
     private BlockedCommandManager blockedCommandManager;
     private MessageManager messageManager;
 
@@ -33,12 +33,12 @@ public class CommandBlock extends JavaPlugin {
         registerCommands();
         registerListeners();
 
-        getLogger().info("CommandBlock has been enabled!");
+        getLogger().info("CommandBlocker has been enabled!");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("CommandBlock has been disabled!");
+        getLogger().info("CommandBlocker has been disabled!");
     }
 
     /**
@@ -47,8 +47,8 @@ public class CommandBlock extends JavaPlugin {
     private void registerCommands() {
         PluginCommand command = getCommand("commandblock");
         if (command != null) {
-            command.setExecutor(new CommandBlockCommand(this));
-            command.setTabCompleter(new CommandBlockTabCompleter(this));
+            command.setExecutor(new CommandBlockerCommand(this));
+            command.setTabCompleter(new CommandBlockerTabCompleter(this));
         }
 
         getLogger().info("Commands has been registered.");
@@ -71,7 +71,7 @@ public class CommandBlock extends JavaPlugin {
         blockedCommandManager.reload();
         updateCommandsForAllPlayers();
 
-        getLogger().info("CommandBlock plugin has been reloaded.");
+        getLogger().info("CommandBlocker plugin has been reloaded.");
     }
 
     /**
@@ -84,7 +84,7 @@ public class CommandBlock extends JavaPlugin {
         }
     }
 
-    public static CommandBlock getInstance() {
+    public static CommandBlocker getInstance() {
         return instance;
     }
 
