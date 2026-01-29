@@ -4,8 +4,8 @@ prefix: "&cCommand&#feca57Blocker &8» &7"
 
 no-permission: "&cYou don't have permission to use this command!"
 unknown-subcommand: "&cUnknown subcommand. Use &e/commandblocker help &cfor help."
-command-not-found: "&cUnknown command. Type \"/help\" for help."
 invalid-format: "&cInvalid command format! Use &eplugin:command &c(e.g., &eminecraft:me&c)."
+command-unknown: "&cUnknown command."
 
 add:
   usage: "&cUsage: &e/commandblocker add <plugin:command>"

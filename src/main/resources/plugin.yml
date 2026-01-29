@@ -6,6 +6,9 @@ author: nxmsdev
 website: https://www.nxms.dev
 description: A plugin for blocking commands
 
+depend:
+  - packetevents
+
 commands:
   commandblocker:
     description: Main command for CommandBlocker plugin

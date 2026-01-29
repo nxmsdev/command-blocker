@@ -1,8 +1,10 @@
 package dev.nxms.commandblocker;
 
+import com.github.retrooper.packetevents.PacketEvents;
 import dev.nxms.commandblocker.command.CommandBlockerCommand;
 import dev.nxms.commandblocker.command.CommandBlockerTabCompleter;
 import dev.nxms.commandblocker.listener.CommandListener;
+import dev.nxms.commandblocker.listener.PacketListener;
 import dev.nxms.commandblocker.manager.BlockedCommandManager;
 import dev.nxms.commandblocker.manager.MessageManager;
 import org.bukkit.command.PluginCommand;
@@ -19,6 +21,13 @@ public class CommandBlocker extends JavaPlugin {
     private BlockedCommandManager blockedCommandManager;
     private MessageManager messageManager;
 
+    private PacketListener packetListener;
+
+    /**
+     * Cached config value for packet logging.
+     */
+    private volatile boolean showPacketLogger;
+
     @Override
     public void onEnable() {
         instance = this;
@@ -27,18 +36,36 @@ public class CommandBlocker extends JavaPlugin {
         saveResource("messages_en.yml", false);
         saveResource("messages_pl.yml", false);
 
+        loadCachedSettings();
+
         messageManager = new MessageManager(this);
         blockedCommandManager = new BlockedCommandManager(this);
 
         registerCommands();
         registerListeners();
+        registerPacketListener();
 
         getLogger().info("CommandBlocker has been enabled!");
     }
 
     @Override
     public void onDisable() {
+        unregisterPacketListener();
         getLogger().info("CommandBlocker has been disabled!");
+    }
+
+    /**
+     * Loads cached settings from config.yml to fields.
+     */
+    private void loadCachedSettings() {
+        this.showPacketLogger = getConfig().getBoolean("show-packet-logger", false);
+    }
+
+    /**
+     * Returns cached value of show-packet-logger.
+     */
+    public boolean isPacketLoggerEnabled() {
+        return showPacketLogger;
     }
 
     /**
@@ -63,10 +90,30 @@ public class CommandBlocker extends JavaPlugin {
     }
 
     /**
+     * Registers PacketEvents listener.
+     */
+    private void registerPacketListener() {
+        packetListener = new PacketListener(this);
+        PacketEvents.getAPI().getEventManager().registerListener(packetListener);
+        getLogger().info("PacketEvents listener has been registered.");
+    }
+
+    /**
+     * Unregisters PacketEvents listener.
+     */
+    private void unregisterPacketListener() {
+        if (packetListener != null) {
+            PacketEvents.getAPI().getEventManager().unregisterListener(packetListener);
+        }
+    }
+
+    /**
      * Reloads all plugin configuration and managers.
      */
     public void reload() {
         reloadConfig();
+        loadCachedSettings();
+
         messageManager.reload();
         blockedCommandManager.reload();
         updateCommandsForAllPlayers();

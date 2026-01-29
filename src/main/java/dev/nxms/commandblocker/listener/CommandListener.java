@@ -15,7 +15,7 @@ import java.util.Set;
 
 /**
  * Listens for command events and blocks restricted commands.
- * Makes blocked commands appear as if they don't exist.
+ * Works together with PacketListener for complete command hiding.
  */
 public class CommandListener implements Listener {
 
@@ -29,35 +29,35 @@ public class CommandListener implements Listener {
 
     /**
      * Intercepts commands before execution and blocks restricted ones.
-     * Sends "unknown command" message to make it appear as non-existent.
+     * Sends "Unknown command" message to simulate non-existent command.
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
 
-        if (canBypass(player)) {
+        if (player.hasPermission("commandblocker.bypass")) {
             return;
         }
 
         String message = event.getMessage();
-        String commandLine = message.substring(1); // Remove leading slash
+        String commandLine = message.substring(1);
         String commandName = commandLine.split(" ")[0].toLowerCase();
 
         if (blockedManager.isBlocked(commandName)) {
             event.setCancelled(true);
-            messages.sendRaw(player, "command-not-found");
+            messages.sendRaw(player, "command-unknown");
         }
     }
 
     /**
      * Filters command suggestions sent to clients.
-     * Removes blocked commands from tab completion.
+     * Additional layer of protection alongside PacketListener.
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCommandSend(PlayerCommandSendEvent event) {
         Player player = event.getPlayer();
 
-        if (canBypass(player)) {
+        if (player.hasPermission("commandblocker.bypass")) {
             return;
         }
 
@@ -70,12 +70,5 @@ public class CommandListener implements Listener {
         }
 
         event.getCommands().removeAll(toRemove);
-    }
-
-    /**
-     * Checks if player can bypass command blocking.
-     */
-    private boolean canBypass(Player player) {
-        return player.hasPermission("commandblocker.bypass");
     }
 }
