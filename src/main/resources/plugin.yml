@@ -1,0 +1,6 @@
+name: CommandBlock
+version: ${project.version}
+main: dev.nxms.commandBlock.CommandBlock
+api-version: '1.21'
+author: nxmsdev
+website: nxms.dev
