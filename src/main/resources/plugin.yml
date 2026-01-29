@@ -7,17 +7,17 @@ website: https://www.nxms.dev
 description: A plugin for blocking commands
 
 commands:
-  commandblock:
+  commandblocker:
     description: Main command for CommandBlocker plugin
     usage: /<command> <add|remove|list|reload|help>
     aliases:
       - cb
 
 permissions:
-  commandblock.command:
+  commandblocker.command:
     description: Access to /commandblocker command
     default: op
-  commandblock.admin:
+  commandblocker.admin:
     description: Full access to all CommandBlock commands
     default: op
     children:

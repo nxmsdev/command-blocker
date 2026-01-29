@@ -3,16 +3,17 @@
 prefix: "&#ff6b6b&lCommand&#feca57Blocker &8» &7"
 
 no-permission: "&cNie masz uprawnień do użycia tej komendy!"
-unknown-subcommand: "&cNieznana podkomenda. Użyj &e/commandblock help &caby uzyskać pomoc."
+unknown-subcommand: "&cNieznana podkomenda. Użyj &e/commandblocker help &caby uzyskać pomoc."
 command-not-found: "&cNieznana komenda. Wpisz \"/help\" aby uzyskać pomoc."
+invalid-format: "&cNieprawidłowy format komendy! Użyj &eplugin:komenda &c(np. &eminecraft:me&c)."
 
 add:
-  usage: "&cUżycie: &e/commandblock add <plugin:komenda>"
+  usage: "&cUżycie: &e/commandblocker add <plugin:komenda>"
   success: "&aKomenda &e%command% &azostała zablokowana."
   already-blocked: "&cKomenda &e%command% &cjest już zablokowana."
 
 remove:
-  usage: "&cUżycie: &e/commandblock remove <plugin:komenda>"
+  usage: "&cUżycie: &e/commandblocker remove <plugin:komenda>"
   success: "&aKomenda &e%command% &azostała odblokowana."
   not-found: "&cKomenda &e%command% &cnie jest zablokowana."
 
@@ -25,7 +26,7 @@ reload:
   success: "&aKonfiguracja została przeładowana!"
 
 help:
-  header: "&6&l« Pomoc CommandBlock »"
+  header: "&6&l« Pomoc CommandBlocker »"
   add: "&e/cb add <plugin:komenda> &8- &7Zablokuj komendę"
   remove: "&e/cb remove <plugin:komenda> &8- &7Odblokuj komendę"
   list: "&e/cb list &8- &7Pokaż zablokowane komendy"

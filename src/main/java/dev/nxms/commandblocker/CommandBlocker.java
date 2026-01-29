@@ -45,7 +45,7 @@ public class CommandBlocker extends JavaPlugin {
      * Registers plugin commands and tab completers.
      */
     private void registerCommands() {
-        PluginCommand command = getCommand("commandblock");
+        PluginCommand command = getCommand("commandblocker");
         if (command != null) {
             command.setExecutor(new CommandBlockerCommand(this));
             command.setTabCompleter(new CommandBlockerTabCompleter(this));

@@ -3,16 +3,17 @@
 prefix: "&cCommand&#feca57Blocker &8» &7"
 
 no-permission: "&cYou don't have permission to use this command!"
-unknown-subcommand: "&cUnknown subcommand. Use &e/commandblock help &cfor help."
+unknown-subcommand: "&cUnknown subcommand. Use &e/commandblocker help &cfor help."
 command-not-found: "&cUnknown command. Type \"/help\" for help."
+invalid-format: "&cInvalid command format! Use &eplugin:command &c(e.g., &eminecraft:me&c)."
 
 add:
-  usage: "&cUsage: &e/commandblock add <plugin:command>"
+  usage: "&cUsage: &e/commandblocker add <plugin:command>"
   success: "&aCommand &e%command% &ahas been blocked."
   already-blocked: "&cCommand &e%command% &cis already blocked."
 
 remove:
-  usage: "&cUsage: &e/commandblock remove <plugin:command>"
+  usage: "&cUsage: &e/commandblocker remove <plugin:command>"
   success: "&aCommand &e%command% &ahas been unblocked."
   not-found: "&cCommand &e%command% &cis not blocked."
 
@@ -25,7 +26,7 @@ reload:
   success: "&aConfiguration reloaded successfully!"
 
 help:
-  header: "&6&l« CommandBlock Help »"
+  header: "&6&l« CommandBlocker Help »"
   add: "&e/cb add <plugin:command> &8- &7Block a command"
   remove: "&e/cb remove <plugin:command> &8- &7Unblock a command"
   list: "&e/cb list &8- &7Show blocked commands"

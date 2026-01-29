@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Main command executor for /commandblock.
+ * Main command executor for /commandblocker.
  * Handles all subcommands: add, remove, list, reload, help.
  */
 public class CommandBlockerCommand implements CommandExecutor {
@@ -65,6 +65,13 @@ public class CommandBlockerCommand implements CommandExecutor {
         }
 
         String cmd = args[1].toLowerCase();
+
+        // Validate command format
+        if (!isValidCommandFormat(cmd)) {
+            messages.send(sender, "invalid-format");
+            return;
+        }
+
         if (blockedManager.add(cmd)) {
             messages.send(sender, "add.success", "%command%", cmd);
         } else {
@@ -87,6 +94,13 @@ public class CommandBlockerCommand implements CommandExecutor {
         }
 
         String cmd = args[1].toLowerCase();
+
+        // Validate command format
+        if (!isValidCommandFormat(cmd)) {
+            messages.send(sender, "invalid-format");
+            return;
+        }
+
         if (blockedManager.remove(cmd)) {
             messages.send(sender, "remove.success", "%command%", cmd);
         } else {
@@ -146,6 +160,20 @@ public class CommandBlockerCommand implements CommandExecutor {
             messages.sendRaw(sender, "help.reload");
         }
         messages.sendRaw(sender, "help.help");
+    }
+
+    /**
+     * Validates command format.
+     * Command must contain ":" to specify namespace (e.g., minecraft:me).
+     */
+    private boolean isValidCommandFormat(String command) {
+        if (command == null || command.isEmpty()) {
+            return false;
+        }
+
+        // Must contain exactly one ":" and not at start or end
+        int colonIndex = command.indexOf(':');
+        return colonIndex > 0 && colonIndex < command.length() - 1;
     }
 
     /**
