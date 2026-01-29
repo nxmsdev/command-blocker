@@ -1,0 +1,33 @@
+# CommandBlock - Messages (Polish)
+
+prefix: "&#ff6b6b&lCommand&#feca57Block &8» &7"
+
+no-permission: "&cNie masz uprawnień do użycia tej komendy!"
+unknown-subcommand: "&cNieznana podkomenda. Użyj &e/commandblock help &caby uzyskać pomoc."
+command-not-found: "&cNieznana komenda. Wpisz \"/help\" aby uzyskać pomoc."
+
+add:
+  usage: "&cUżycie: &e/commandblock add <plugin:komenda>"
+  success: "&aKomenda &e%command% &azostała zablokowana."
+  already-blocked: "&cKomenda &e%command% &cjest już zablokowana."
+
+remove:
+  usage: "&cUżycie: &e/commandblock remove <plugin:komenda>"
+  success: "&aKomenda &e%command% &azostała odblokowana."
+  not-found: "&cKomenda &e%command% &cnie jest zablokowana."
+
+list:
+  header: "&6&lZablokowane Komendy:"
+  empty: "&7Brak zablokowanych komend."
+  entry: "&8• &e%command%"
+
+reload:
+  success: "&aKonfiguracja została przeładowana!"
+
+help:
+  header: "&6&l« Pomoc CommandBlock »"
+  add: "&e/cb add <plugin:komenda> &8- &7Zablokuj komendę"
+  remove: "&e/cb remove <plugin:komenda> &8- &7Odblokuj komendę"
+  list: "&e/cb list &8- &7Pokaż zablokowane komendy"
+  reload: "&e/cb reload &8- &7Przeładuj konfigurację"
+  help: "&e/cb help &8- &7Pokaż tę wiadomość"

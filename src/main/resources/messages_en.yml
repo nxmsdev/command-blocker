@@ -1,0 +1,33 @@
+# CommandBlock - Messages (English)
+
+prefix: "&cCommand&#feca57Block &8» &7"
+
+no-permission: "&cYou don't have permission to use this command!"
+unknown-subcommand: "&cUnknown subcommand. Use &e/commandblock help &cfor help."
+command-not-found: "&cUnknown command. Type \"/help\" for help."
+
+add:
+  usage: "&cUsage: &e/commandblock add <plugin:command>"
+  success: "&aCommand &e%command% &ahas been blocked."
+  already-blocked: "&cCommand &e%command% &cis already blocked."
+
+remove:
+  usage: "&cUsage: &e/commandblock remove <plugin:command>"
+  success: "&aCommand &e%command% &ahas been unblocked."
+  not-found: "&cCommand &e%command% &cis not blocked."
+
+list:
+  header: "&6&lBlocked Commands:"
+  empty: "&7No commands are blocked."
+  entry: "&8• &e%command%"
+
+reload:
+  success: "&aConfiguration reloaded successfully!"
+
+help:
+  header: "&6&l« CommandBlock Help »"
+  add: "&e/cb add <plugin:command> &8- &7Block a command"
+  remove: "&e/cb remove <plugin:command> &8- &7Unblock a command"
+  list: "&e/cb list &8- &7Show blocked commands"
+  reload: "&e/cb reload &8- &7Reload configuration"
+  help: "&e/cb help &8- &7Show this message"

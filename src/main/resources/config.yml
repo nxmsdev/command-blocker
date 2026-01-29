@@ -1,0 +1,9 @@
+# CommandBlock Configuration
+
+# Language setting (en / pl)
+language: en
+
+# List of blocked commands
+# Format: plugin:command (e.g., minecraft:msg, essentials:home)
+blocked-commands:
+  - "plugin:command"
