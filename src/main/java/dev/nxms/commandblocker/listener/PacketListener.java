@@ -73,7 +73,7 @@ public class PacketListener extends PacketListenerAbstract {
 
             if (blockedManager.isBlocked(commandName)) {
                 event.setCancelled(true);
-                messages.sendRaw(player, "command-unknown");
+                messages.send(player, "command-unknown");
             }
         } catch (Exception e) {
             plugin.getLogger().warning("Failed to process command packet: " + e.getMessage());

@@ -117,17 +117,17 @@ public class CommandBlockerCommand implements CommandExecutor {
             return;
         }
 
-        messages.sendRaw(sender, "list.header");
+        messages.send(sender, "list.header");
 
         if (blockedManager.isEmpty()) {
-            messages.sendRaw(sender, "list.empty");
+            messages.send(sender, "list.empty");
         } else {
             for (String cmd : blockedManager.getBlockedCommands().stream().sorted().toList()) {
-                messages.sendRaw(sender, "list.entry", "%command%", cmd);
+                messages.send(sender, "list.entry", "%command%", cmd);
             }
         }
 
-        messages.sendRaw(sender, "list.footer");
+        messages.send(sender, "list.footer");
     }
 
     /**
@@ -147,23 +147,23 @@ public class CommandBlockerCommand implements CommandExecutor {
      * Handles the help subcommand.
      */
     private void handleHelp(CommandSender sender) {
-        messages.sendRaw(sender, "help.header");
+        messages.send(sender, "help.header");
 
         if (hasPermission(sender, "commandblocker.add")) {
-            messages.sendRaw(sender, "help.add");
+            messages.send(sender, "help.add");
         }
         if (hasPermission(sender, "commandblocker.remove")) {
-            messages.sendRaw(sender, "help.remove");
+            messages.send(sender, "help.remove");
         }
         if (hasPermission(sender, "commandblocker.list")) {
-            messages.sendRaw(sender, "help.list");
+            messages.send(sender, "help.list");
         }
         if (hasPermission(sender, "commandblocker.reload")) {
-            messages.sendRaw(sender, "help.reload");
+            messages.send(sender, "help.reload");
         }
-        messages.sendRaw(sender, "help.help");
+        messages.send(sender, "help.help");
 
-        messages.sendRaw(sender, "help.footer");
+        messages.send(sender, "help.footer");
     }
 
     /**
