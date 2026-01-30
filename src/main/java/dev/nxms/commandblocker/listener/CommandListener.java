@@ -19,10 +19,12 @@ import java.util.Set;
  */
 public class CommandListener implements Listener {
 
+    private final CommandBlocker plugin;
     private final BlockedCommandManager blockedManager;
     private final MessageManager messages;
 
     public CommandListener(CommandBlocker plugin) {
+        this.plugin = plugin;
         this.blockedManager = plugin.getBlockedCommandManager();
         this.messages = plugin.getMessageManager();
     }

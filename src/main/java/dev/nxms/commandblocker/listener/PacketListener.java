@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Handles packet-level command blocking using PacketEvents.
- * Intercepts command packets to completely hide blocked commands from clients.
+ * Hides blocked commands from the DECLARE_COMMANDS packet using PacketEvents.
  */
 public class PacketListener extends PacketListenerAbstract {
 
@@ -47,6 +46,7 @@ public class PacketListener extends PacketListenerAbstract {
 
         try {
             WrapperPlayServerDeclareCommands packet = new WrapperPlayServerDeclareCommands(event);
+
             List<Node> nodes = packet.getNodes();
             int rootIndex = packet.getRootIndex();
 
@@ -54,10 +54,15 @@ public class PacketListener extends PacketListenerAbstract {
                 return;
             }
 
-            FilterResult result = filterCommands(nodes, rootIndex, player);
+            FilterResult result = filterCommands(nodes, rootIndex);
+
+            if (!result.changed) {
+                return;
+            }
 
             packet.setNodes(result.nodes);
             packet.setRootIndex(result.rootIndex);
+            packet.write();
         } catch (Exception e) {
             plugin.getLogger().warning("Failed to filter commands packet: " + e.getMessage());
         }
@@ -66,14 +71,16 @@ public class PacketListener extends PacketListenerAbstract {
     /**
      * Filters command nodes, removing blocked commands.
      */
-    private FilterResult filterCommands(List<Node> originalNodes, int originalRootIndex, Player player) {
+    private FilterResult filterCommands(List<Node> originalNodes, int originalRootIndex) {
         List<Node> newNodes = new ArrayList<>();
         Map<Integer, Integer> indexMapping = new HashMap<>();
+        boolean changed = false;
 
         for (int i = 0; i < originalNodes.size(); i++) {
             Node node = originalNodes.get(i);
 
-            if (shouldRemoveNode(node, i, originalRootIndex, originalNodes, player)) {
+            if (shouldRemoveNode(node, i, originalRootIndex, originalNodes)) {
+                changed = true;
                 continue;
             }
 
@@ -83,29 +90,54 @@ public class PacketListener extends PacketListenerAbstract {
 
         List<Node> updatedNodes = new ArrayList<>();
         for (Node node : newNodes) {
-            List<Integer> oldChildren = node.getChildren();
-            List<Integer> newChildren = new ArrayList<>();
-
-            for (int oldChild : oldChildren) {
-                Integer newIndex = indexMapping.get(oldChild);
-                if (newIndex != null) {
-                    newChildren.add(newIndex);
+            List<Integer> remappedChildren = new ArrayList<>();
+            for (int oldChild : node.getChildren()) {
+                Integer mapped = indexMapping.get(oldChild);
+                if (mapped != null) {
+                    remappedChildren.add(mapped);
+                } else {
+                    changed = true;
                 }
             }
 
-            Node updatedNode = createNodeWithNewChildren(node, newChildren);
-            updatedNodes.add(updatedNode);
+            byte newFlags = node.getFlags();
+            int newRedirectIndex = node.getRedirectNodeIndex();
+
+            boolean hasRedirect = (newFlags & Node.FLAG_REDIRECT) == Node.FLAG_REDIRECT;
+            if (hasRedirect) {
+                Integer mappedRedirect = indexMapping.get(node.getRedirectNodeIndex());
+                if (mappedRedirect != null) {
+                    newRedirectIndex = mappedRedirect;
+                } else {
+                    newFlags = (byte) (newFlags & ~Node.FLAG_REDIRECT);
+                    newRedirectIndex = 0;
+                    changed = true;
+                }
+            }
+
+            updatedNodes.add(new Node(
+                    newFlags,
+                    remappedChildren,
+                    newRedirectIndex,
+                    node.getName().orElse(null),
+                    node.getParser().orElse(null),
+                    node.getProperties().orElse(null),
+                    node.getSuggestionsType().orElse(null)
+            ));
         }
 
         int newRootIndex = indexMapping.getOrDefault(originalRootIndex, 0);
+        if (newRootIndex != originalRootIndex) {
+            changed = true;
+        }
 
-        return new FilterResult(updatedNodes, newRootIndex);
+        return new FilterResult(updatedNodes, newRootIndex, changed);
     }
 
     /**
      * Determines if a node should be removed.
      */
-    private boolean shouldRemoveNode(Node node, int nodeIndex, int rootIndex, List<Node> allNodes, Player player) {
+    private boolean shouldRemoveNode(Node node, int nodeIndex, int rootIndex, List<Node> allNodes) {
         byte nodeType = (byte) (node.getFlags() & Node.TYPE_MASK);
         if (nodeType != Node.TYPE_LITERAL) {
             return false;
@@ -121,12 +153,7 @@ public class PacketListener extends PacketListenerAbstract {
 
         for (int childIndex : rootChildren) {
             if (childIndex == nodeIndex) {
-                if (blockedManager.isBlocked(name.toLowerCase())) {
-                    if (plugin.isPacketLoggerEnabled()) {
-                        plugin.getLogger().info("Blocked command '" + name + "' from packet for player: " + player.getName() + ".");
-                    }
-                    return true;
-                }
+                return blockedManager.isBlocked(name.toLowerCase());
             }
         }
 
@@ -134,22 +161,7 @@ public class PacketListener extends PacketListenerAbstract {
     }
 
     /**
-     * Creates a copy of node with updated children indices.
-     */
-    private Node createNodeWithNewChildren(Node original, List<Integer> newChildren) {
-        return new Node(
-                original.getFlags(),
-                newChildren,
-                original.getRedirectNodeIndex(),
-                original.getName().orElse(null),
-                original.getParser().orElse(null),
-                original.getProperties().orElse(null),
-                original.getSuggestionsType().orElse(null)
-        );
-    }
-
-    /**
      * Result of command filtering operation.
      */
-    private record FilterResult(List<Node> nodes, int rootIndex) {}
+    private record FilterResult(List<Node> nodes, int rootIndex, boolean changed) {}
 }

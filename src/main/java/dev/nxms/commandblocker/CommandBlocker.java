@@ -20,21 +20,13 @@ public class CommandBlocker extends JavaPlugin {
     private static CommandBlocker instance;
     private BlockedCommandManager blockedCommandManager;
     private MessageManager messageManager;
-
     private PacketListener packetListener;
-
-    /**
-     * Cached config value for packet logging.
-     */
-    private volatile boolean showPacketLogger;
 
     @Override
     public void onEnable() {
         instance = this;
 
         saveDefaultConfig();
-
-        loadCachedSettings();
 
         messageManager = new MessageManager(this);
         blockedCommandManager = new BlockedCommandManager(this);
@@ -53,20 +45,6 @@ public class CommandBlocker extends JavaPlugin {
     }
 
     /**
-     * Loads cached settings from config.yml to fields.
-     */
-    private void loadCachedSettings() {
-        this.showPacketLogger = getConfig().getBoolean("show-packet-logger", false);
-    }
-
-    /**
-     * Returns cached value of show-packet-logger.
-     */
-    public boolean isPacketLoggerEnabled() {
-        return showPacketLogger;
-    }
-
-    /**
      * Registers plugin commands and tab completers.
      */
     private void registerCommands() {
@@ -75,7 +53,6 @@ public class CommandBlocker extends JavaPlugin {
             command.setExecutor(new CommandBlockerCommand(this));
             command.setTabCompleter(new CommandBlockerTabCompleter(this));
         }
-
         getLogger().info("Commands has been registered.");
     }
 
@@ -84,7 +61,7 @@ public class CommandBlocker extends JavaPlugin {
      */
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new CommandListener(this), this);
-        getLogger().info("Listeners has been registered");
+        getLogger().info("Listeners has been registered.");
     }
 
     /**
@@ -110,18 +87,14 @@ public class CommandBlocker extends JavaPlugin {
      */
     public void reload() {
         reloadConfig();
-        loadCachedSettings();
-
         messageManager.reload();
         blockedCommandManager.reload();
         updateCommandsForAllPlayers();
-
         getLogger().info("CommandBlocker plugin has been reloaded.");
     }
 
     /**
      * Updates command list for all online players.
-     * Forces client to refresh available commands.
      */
     public void updateCommandsForAllPlayers() {
         for (Player player : getServer().getOnlinePlayers()) {

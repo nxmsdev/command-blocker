@@ -3,11 +3,6 @@
 # Language setting (en / pl)
 language: en
 
-# Enable packet logger (logs when a command gets removed from DECLARE_COMMANDS packet)
-# true  - show logs in console
-# false - do not log
-show-packet-logger: false
-
 # List of blocked commands
 # Format: plugin:command (e.g., minecraft:msg, essentials:home)
 blocked-commands:

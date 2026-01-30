@@ -87,16 +87,13 @@ public class BlockedCommandManager {
         // Check if command matches any blocked command
         for (String blocked : blockedCommands) {
             if (blocked.contains(":")) {
-                // Blocked command has namespace
                 String blockedName = blocked.split(":")[1];
 
                 if (lowerCommand.contains(":")) {
-                    // Input also has namespace - exact match needed
                     if (blocked.equals(lowerCommand)) {
                         return true;
                     }
                 } else {
-                    // Input has no namespace - match command name
                     if (blockedName.equals(lowerCommand)) {
                         return true;
                     }
