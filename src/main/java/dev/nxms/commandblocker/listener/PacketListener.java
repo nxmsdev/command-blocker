@@ -2,12 +2,16 @@ package dev.nxms.commandblocker.listener;
 
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.chat.Node;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientChatCommand;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientChatCommandUnsigned;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDeclareCommands;
 import dev.nxms.commandblocker.CommandBlocker;
 import dev.nxms.commandblocker.manager.BlockedCommandManager;
+import dev.nxms.commandblocker.manager.MessageManager;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -16,19 +20,70 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Hides blocked commands from the DECLARE_COMMANDS packet using PacketEvents.
+ * Hides blocked commands from packets using PacketEvents.
+ * Handles both DECLARE_COMMANDS (tab-completion) and CHAT_COMMAND (execution).
  */
 public class PacketListener extends PacketListenerAbstract {
 
     private final CommandBlocker plugin;
     private final BlockedCommandManager blockedManager;
+    private final MessageManager messages;
 
     public PacketListener(CommandBlocker plugin) {
         super(PacketListenerPriority.HIGHEST);
         this.plugin = plugin;
         this.blockedManager = plugin.getBlockedCommandManager();
+        this.messages = plugin.getMessageManager();
     }
 
+    /**
+     * Intercepts incoming packets (client -> server).
+     * Blocks command execution packets for blocked commands.
+     */
+    @Override
+    public void onPacketReceive(PacketReceiveEvent event) {
+        boolean isChatCommand = event.getPacketType() == PacketType.Play.Client.CHAT_COMMAND;
+        boolean isChatCommandUnsigned = event.getPacketType() == PacketType.Play.Client.CHAT_COMMAND_UNSIGNED;
+
+        if (!isChatCommand && !isChatCommandUnsigned) {
+            return;
+        }
+
+        Object playerObj = event.getPlayer();
+        if (!(playerObj instanceof Player player)) {
+            return;
+        }
+
+        if (player.hasPermission("commandblocker.bypass")) {
+            return;
+        }
+
+        try {
+            String command;
+
+            if (isChatCommand) {
+                WrapperPlayClientChatCommand packet = new WrapperPlayClientChatCommand(event);
+                command = packet.getCommand();
+            } else {
+                WrapperPlayClientChatCommandUnsigned packet = new WrapperPlayClientChatCommandUnsigned(event);
+                command = packet.getCommand();
+            }
+
+            String commandName = command.split(" ")[0].toLowerCase();
+
+            if (blockedManager.isBlocked(commandName)) {
+                event.setCancelled(true);
+                messages.sendRaw(player, "command-unknown");
+            }
+        } catch (Exception e) {
+            plugin.getLogger().warning("Failed to process command packet: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Intercepts outgoing packets (server -> client).
+     * Removes blocked commands from DECLARE_COMMANDS packet.
+     */
     @Override
     public void onPacketSend(PacketSendEvent event) {
         if (event.getPacketType() != PacketType.Play.Server.DECLARE_COMMANDS) {

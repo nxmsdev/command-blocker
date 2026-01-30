@@ -3,7 +3,6 @@ package dev.nxms.commandblocker;
 import com.github.retrooper.packetevents.PacketEvents;
 import dev.nxms.commandblocker.command.CommandBlockerCommand;
 import dev.nxms.commandblocker.command.CommandBlockerTabCompleter;
-import dev.nxms.commandblocker.listener.CommandListener;
 import dev.nxms.commandblocker.listener.PacketListener;
 import dev.nxms.commandblocker.manager.BlockedCommandManager;
 import dev.nxms.commandblocker.manager.MessageManager;
@@ -32,7 +31,6 @@ public class CommandBlocker extends JavaPlugin {
         blockedCommandManager = new BlockedCommandManager(this);
 
         registerCommands();
-        registerListeners();
         registerPacketListener();
 
         getLogger().info("CommandBlocker has been enabled!");
@@ -54,14 +52,6 @@ public class CommandBlocker extends JavaPlugin {
             command.setTabCompleter(new CommandBlockerTabCompleter(this));
         }
         getLogger().info("Commands has been registered.");
-    }
-
-    /**
-     * Registers event listeners.
-     */
-    private void registerListeners() {
-        getServer().getPluginManager().registerEvents(new CommandListener(this), this);
-        getLogger().info("Listeners has been registered.");
     }
 
     /**
