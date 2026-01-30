@@ -1,34 +1,38 @@
 # CommandBlocker - Messages (English)
 
-prefix: "&cCommand&#feca57Blocker &8» &7"
+prefix-error: "&8[&c&l❌&r&8]&r"
+prefix-success: "&8[&a&l✔&r&8]&r"
+prefix-hint: "&8[&e&l?&r&8]&r"
 
-no-permission: "&cYou don't have permission to use this command!"
-unknown-subcommand: "&cUnknown subcommand. Use &e/commandblocker help &cfor help."
-invalid-format: "&cInvalid command format! Use &eplugin:command &c(e.g., &eminecraft:me&c)."
-command-unknown: "&cUnknown command."
+no-permission: "{prefix-error} &cYou don't have permission!"
+unknown-subcommand: "{prefix-error} &cUnknown subcommand. Use &7/commandblocker help &cfor help."
+invalid-format: "{prefix-error} &cInvalid command format! Use &7plugin:command &c(e.g., &7minecraft:me&c)."
+command-unknown: "{prefix-error}&cUnknown command."
 
 add:
-  usage: "&cUsage: &e/commandblocker add <plugin:command>"
-  success: "&aCommand &e%command% &ahas been blocked."
-  already-blocked: "&cCommand &e%command% &cis already blocked."
+  usage: "{prefix-hint} &eUsage: &7/commandblocker add <plugin:command>"
+  success: "{prefix-success} &aCommand &e%command% &ahas been blocked."
+  already-blocked: "{prefix-error} &cCommand &e%command% &cis already blocked."
 
 remove:
-  usage: "&cUsage: &e/commandblocker remove <plugin:command>"
-  success: "&aCommand &e%command% &ahas been unblocked."
-  not-found: "&cCommand &e%command% &cis not blocked."
+  usage: "{prefix-hint} &eUsage: &7/commandblocker remove <plugin:command>"
+  success: "{prefix-success} &aCommand &e%command% &ahas been unblocked."
+  not-found: "{prefix-error} &cCommand &e%command% &cis not blocked."
 
 list:
-  header: "&6&lBlocked Commands:"
+  header: " "
   empty: "&7No commands are blocked."
   entry: "&8• &e%command%"
+  footer: " "
 
 reload:
-  success: "&aConfiguration reloaded successfully!"
+  success: "{prefix-success} &aConfiguration reloaded successfully!"
 
 help:
-  header: "&6&l« CommandBlocker Help »"
-  add: "&e/cb add <plugin:command> &8- &7Block a command"
-  remove: "&e/cb remove <plugin:command> &8- &7Unblock a command"
-  list: "&e/cb list &8- &7Show blocked commands"
-  reload: "&e/cb reload &8- &7Reload configuration"
-  help: "&e/cb help &8- &7Show this message"
+  header: " "
+  add: "&8• &e/cb add <plugin:command> &8› &7Block a command"
+  remove: "&8• &e/cb remove <plugin:command> &8› &7Unblock a command"
+  list: "&8• &e/cb list &8› &7Show blocked commands"
+  reload: "&8• &e/cb reload &8› &7Reload configuration"
+  help: "&8• &e/cb help &8› &7Show this message"
+  footer: " "

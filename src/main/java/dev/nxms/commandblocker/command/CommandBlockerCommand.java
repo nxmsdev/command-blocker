@@ -126,6 +126,8 @@ public class CommandBlockerCommand implements CommandExecutor {
                 messages.sendRaw(sender, "list.entry", "%command%", cmd);
             }
         }
+
+        messages.sendRaw(sender, "list.footer");
     }
 
     /**
@@ -160,6 +162,8 @@ public class CommandBlockerCommand implements CommandExecutor {
             messages.sendRaw(sender, "help.reload");
         }
         messages.sendRaw(sender, "help.help");
+
+        messages.sendRaw(sender, "help.footer");
     }
 
     /**
